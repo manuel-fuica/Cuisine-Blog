@@ -16,19 +16,19 @@ app.use(express.json()); // Permite manejar datos en formato JSON
 
 // Rutas públicas
 // Servir archivos estáticos como el HTML
-app.use(express.static(path.join(__dirname, 'vistas')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta para la raíz que redirige a login.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'vistas', 'login.html')); // Redirigir a login.html
+    res.sendFile(path.join(__dirname, 'public', 'vistas', 'login.html')); // Redirigir a login.html
 });
 // Ruta para la página de registro
 app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, 'vistas', 'signup.html')); // Redirigir a signup.html
+    res.sendFile(path.join(__dirname, 'public', 'vistas', 'signup.html')); // Redirigir a signup.html
 });
 // Ruta para la página de inicio
 app.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, 'vistas', 'home.html')); // Redirigir a home.html
+    res.sendFile(path.join(__dirname, 'public', 'vistas', 'home.html')); // Redirigir a home.html
 });
 
 // Rutas de autenticación
