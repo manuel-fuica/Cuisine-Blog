@@ -1,9 +1,6 @@
-// models/User.js
-const { DataTypes } = require('sequelize');
-const bcrypt = require('bcryptjs');
-const sequelize = require('../config/database');
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = require('../config/database'); // Importa la instancia de Sequelize
 
-// Definir el modelo para la tabla "Users"
 const User = sequelize.define('User', {
     id: {
         type: DataTypes.INTEGER,
@@ -13,7 +10,6 @@ const User = sequelize.define('User', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     },
     email: {
         type: DataTypes.STRING,
@@ -25,13 +21,7 @@ const User = sequelize.define('User', {
         allowNull: false,
     },
 }, {
-    timestamps: true,  // Activa los campos createdAt y updatedAt
-});
-
-// Middleware para encriptar la contraseña antes de guardar en la base de datos
-User.beforeCreate(async (user) => {
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
+    timestamps: true, // Para que se creen las columnas `createdAt` y `updatedAt`
 });
 
 module.exports = User;
