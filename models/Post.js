@@ -1,9 +1,10 @@
 // models/Post.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const User = require('./User');  // Importar el modelo de User
+const User = require('./User');
+const Like = require('./Like');
+const Comment = require('./Comment');
 
-// Definir el modelo para la tabla "Posts"
 const Post = sequelize.define('Post', {
     id: {
         type: DataTypes.INTEGER,
@@ -12,19 +13,21 @@ const Post = sequelize.define('Post', {
     },
     title: {
         type: DataTypes.STRING,
-        allowNull: false,
     },
     content: {
         type: DataTypes.TEXT,
-        allowNull: false,
     },
 }, {
-    timestamps: true,  // Activa los campos createdAt y updatedAt
+    timestamps: true,
 });
 
-// Definir relaciones
-Post.belongsTo(User);  // Un post pertenece a un usuario
-User.hasMany(Post);    // Un usuario tiene muchos posts
+Post.belongsTo(User);
+User.hasMany(Post);
+
+Post.hasMany(Like);
+Like.belongsTo(Post);
+
+Post.hasMany(Comment);
+Comment.belongsTo(Post);
 
 module.exports = Post;
-

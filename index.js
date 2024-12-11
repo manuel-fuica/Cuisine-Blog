@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const sequelize = require('./config/database');
+const sequelize = require('./config/database'); // Asegúrate de importar solo una vez
 const authRoutes = require('./routes/authRoutes'); // Rutas de autenticación
 const postRoutes = require('./routes/postRoutes'); // Rutas de posts
 const path = require('path');
@@ -37,12 +37,16 @@ app.use('/auth', authRoutes);
 // Rutas protegidas
 app.use('/posts', postRoutes);
 
-// Sincronizar y levantar el servidor
-sequelize.sync({ force: false }) // Esto elimina y vuelve a crear la tabla en la base de datos
+// Sincronizar las tablas
+sequelize.sync({ force: false }) // Esto eliminará y recreará las tablas si es necesario
     .then(() => {
-        console.log('Tablas sincronizadas');
+        console.log('Las tablas fueron sincronizadas.');
+
+        // Iniciar el servidor solo después de la sincronización
         app.listen(process.env.PORT || 5000, () => {
             console.log(`Servidor corriendo en el puerto ${process.env.PORT || 5000}`);
         });
     })
-    .catch((err) => console.error('Error al sincronizar tablas:', err));
+    .catch((err) => {
+        console.error('Error al sincronizar las tablas:', err);
+    });
