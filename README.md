@@ -6,7 +6,7 @@
 - ORM: Sequelize (opcional, para facilitar la interacción con la base de datos).
 
 ## Frontend:
-### Framework: React (puede cambiar según tu preferencia, como Angular o Vue).
+### Framework: 
 
 ## Funciones Principales:
 - Usuarios: Registro, inicio de sesión, perfil.
