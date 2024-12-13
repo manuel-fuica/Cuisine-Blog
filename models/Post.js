@@ -17,8 +17,10 @@ const Post = sequelize.define('Post', {
     content: {
         type: DataTypes.TEXT,
     },
-}, {
-    timestamps: true,
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+    },
 });
 
 Post.belongsTo(User);
