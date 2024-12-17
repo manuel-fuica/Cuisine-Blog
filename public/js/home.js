@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('No se encontró token en el localStorage');
     }
+
+    const userName = localStorage.getItem('username');
+    const userNameElement = document.getElementById('user-name');
+    userNameElement.textContent = userName;
 });
 
 const fetchPosts = async (headers) => {
@@ -15,6 +19,7 @@ const fetchPosts = async (headers) => {
         const response = await fetch('/posts', { headers });
         const posts = await response.json();
         console.log(posts);
+
         // Carga los posts en el DOM
         const postContainer = document.querySelector('.container');
         posts.forEach((post) => {

@@ -30,6 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Inicio de sesión exitoso');
                 //almacena el token en el localStorage
                 localStorage.setItem('token', data.token);
+
+                //Guarda el nombre y el id del usuario en el localStorage
+                const userID = data.user.id;
+                const userName = data.user.username;
+                localStorage.setItem('userID', userID);
+                localStorage.setItem('username', userName);
+
                 //redirige al home
                 window.location.href = 'http://localhost:5000/home';
             } else {
