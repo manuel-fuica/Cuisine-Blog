@@ -30,6 +30,10 @@ app.get('/signup', (req, res) => {
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'vistas', 'home.html')); // Redirigir a home.html
 });
+// Ruta para la página de recetas
+app.get('/recetas', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'vistas', 'recetas.html')); // Redirigir a recetas.html
+});
 
 // Rutas de autenticación
 app.use('/auth', authRoutes);
