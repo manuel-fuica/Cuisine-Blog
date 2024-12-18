@@ -17,7 +17,10 @@ const Post = sequelize.define('Post', {
     descripcion: {
         type: DataTypes.TEXT,
     },
-    receta: {
+    ingredientes: {
+        type: DataTypes.TEXT,
+    },
+    preparacion: {
         type: DataTypes.TEXT,
     },
     createdAt: {
