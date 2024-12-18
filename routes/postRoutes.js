@@ -6,11 +6,12 @@ const router = express.Router();
 
 // Crear un post (protegido)
 router.post('/', auth, async (req, res) => {
-    const { title, content } = req.body;
+    const { title, descripcion, receta } = req.body;
     const userId = req.user.userId;
+    console.log(userId);
 
     try {
-        const newPost = await Post.create({ title, content, UserId: userId });
+        const newPost = await Post.create({ title, descripcion, receta, UserId: userId });
         res.status(201).json(newPost);
     } catch (error) {
         res.status(500).json({ error: 'Error al crear el post' });

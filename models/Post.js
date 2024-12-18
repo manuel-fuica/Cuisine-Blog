@@ -14,7 +14,10 @@ const Post = sequelize.define('Post', {
     title: {
         type: DataTypes.STRING,
     },
-    content: {
+    descripcion: {
+        type: DataTypes.TEXT,
+    },
+    receta: {
         type: DataTypes.TEXT,
     },
     createdAt: {
@@ -23,8 +26,9 @@ const Post = sequelize.define('Post', {
     },
 });
 
-Post.belongsTo(User);
-User.hasMany(Post);
+// Relación explícita con User (asegurándonos de que sea 'UserId')
+Post.belongsTo(User, { foreignKey: 'UserId' }); // Especifica el campo UserId
+User.hasMany(Post, { foreignKey: 'UserId' });
 
 Post.hasMany(Like);
 Like.belongsTo(Post);
