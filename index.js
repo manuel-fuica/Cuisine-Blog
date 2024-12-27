@@ -34,6 +34,10 @@ app.get('/home', (req, res) => {
 app.get('/recetas', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'vistas', 'recetas.html')); // Redirigir a recetas.html
 });
+//Ruta para crear nuevo post
+app.get('/crearPost', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'vistas', 'crearPost.html')); // Redirigir a crearPost.html
+});
 
 // Rutas de autenticación
 app.use('/auth', authRoutes);
@@ -42,7 +46,7 @@ app.use('/auth', authRoutes);
 app.use('/posts', postRoutes);
 
 // Sincronizar las tablas
-sequelize.sync({ force: false }) // Esto eliminará y recreará las tablas si es necesario
+sequelize.sync({ force: false}) // Esto eliminará y recreará las tablas si es necesario
     .then(() => {
         console.log('Las tablas fueron sincronizadas.');
 
