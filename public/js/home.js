@@ -40,8 +40,8 @@ const fetchPosts = async (headers) => {
                       <p class="card-text">${post.descripcion}</p>
                       <div class="mt-auto">
                           <div class="d-flex gap-3">
-                              <button id="like-btn" class="btn btn-outline-primary">❤️ <span id="like-count">0</span></button>
-                              <button id="view-recipe-btn" class="btn btn-outline-success">Ver receta</button>
+                              <button id="like-btn" class="btn btn-outline-primary bg-primary text-white">❤️ <span id="like-count">0</span></button>
+                              <button id="view-recipe-btn" class="btn btn-outline-success bg-success text-white">Ver receta</button>
                           </div>
                       </div>
                   </div>
