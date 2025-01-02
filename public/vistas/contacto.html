@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../css/crearPost.css">
+    <link rel="stylesheet" href="../css/contacto.css">
 </head>
 
-<body id="crearPostBody">
+<body id="contactoBody">
     <!-- Header -->
     <header class="text-white text-center py-3">
         <h1 class="text-white"><strong>Cuisine Blog</strong></h1>
@@ -54,26 +54,26 @@
             <!-- Columna del Formulario -->
             <div class="col-md-6">
                 <div id="create-post-form" class="card shadow p-4">
-                    <h3 class="mb-4 text-center">Crear Nuevo Post</h3>
+                    <h3 class="mb-4 text-center">Contactenos</h3>
                     <form action="/posts" method="POST">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Título</label>
-                            <input type="text" name="title" id="title" class="form-control" placeholder="Ingresa el título del post" required>
+                            <label for="title" class="form-label">Nombre Completo</label>
+                            <input type="text" name="title" id="title" class="form-control" placeholder="Ingrese su nombre completo" required>
                         </div>
                         <div class="mb-3">
-                            <label for="descripcion" class="form-label">Descripción</label>
-                            <textarea name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Escribe una breve descripción" required></textarea>
+                            <label for="descripcion" class="form-label">Correo</label>
+                            <textarea name="descripcion" id="descripcion" class="form-control" rows="2" placeholder="Escriba su correo" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="ingredientes" class="form-label">Ingredientes</label>
-                            <textarea name="ingredientes" id="ingredientes" class="form-control" rows="3" placeholder="Lista los ingredientes separados por comas" required></textarea>
+                            <label for="ingredientes" class="form-label">Asunto</label>
+                            <textarea name="ingredientes" id="ingredientes" class="form-control" rows="2" placeholder="Escriba el asunto" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="preparacion" class="form-label">Preparación</label>
-                            <textarea name="preparacion" id="preparacion" class="form-control" rows="4" placeholder="Describe los pasos para la preparación" required></textarea>
+                            <label for="preparacion" class="form-label">Mensaje</label>
+                            <textarea name="preparacion" id="preparacion" class="form-control" rows="5" placeholder="Escriba su mensaje" required></textarea>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-success w-100">Crear Post</button>
+                            <button type="submit" class="btn btn-success w-100">Enviar</button>
                         </div>
                     </form>
                 </div>

@@ -1,0 +1,12 @@
+#nosotrosBody {
+    background-image: url('../img/img-fondo-crearPost.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.divNosotros {
+    font-family: 'Permanent Marker', cursive; /* Aplicar la fuente a las tarjetas */
+    color: #fff;
+}

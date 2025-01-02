@@ -38,6 +38,14 @@ app.get('/recetas', (req, res) => {
 app.get('/crearPost', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'vistas', 'crearPost.html')); // Redirigir a crearPost.html
 });
+//ruta para nosotros
+app.get('/nosotros', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'vistas', 'nosotros.html')); // Redirigir a nosotros.html
+});
+//Ruta para contacto
+app.get('/contacto', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'vistas', 'contacto.html')); // Redirigir a contacto.html
+});
 
 // Rutas de autenticación
 app.use('/auth', authRoutes);
