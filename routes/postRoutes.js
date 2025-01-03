@@ -31,7 +31,7 @@ router.post('/', auth, async (req, res) => {
 // Obtener todos los posts (protegido)
 router.get('/', auth, async (req, res) => {
     try {
-        const posts = await Post.findAll();  // Elimina el include para solo obtener los posts
+        const posts = await Post.findAll();
         res.status(200).json(posts);
     } catch (error) {
         console.error('Error al obtener los posts:', error);

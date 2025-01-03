@@ -55,7 +55,7 @@
             <div class="col-md-6">
                 <div id="create-post-form" class="card shadow p-4">
                     <h3 class="mb-4 text-center">Crear Nuevo Post</h3>
-                    <form action="/posts" method="POST">
+                    <form id="postForm" action="/posts" method="POST">
                         <div class="mb-3">
                             <label for="title" class="form-label">Título</label>
                             <input type="text" name="title" id="title" class="form-control" placeholder="Ingresa el título del post" required>
@@ -71,6 +71,9 @@
                         <div class="mb-3">
                             <label for="preparacion" class="form-label">Preparación</label>
                             <textarea name="preparacion" id="preparacion" class="form-control" rows="4" placeholder="Describe los pasos para la preparación" required></textarea>
+                            <div id="preparacionError" class="text-danger mt-1" style="display: none;">
+                                Por favor, escribe los pasos iniciando con un número y un punto (ejemplo: "1. Paso uno, 2. Paso dos").
+                            </div>
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-success w-100">Crear Post</button>
