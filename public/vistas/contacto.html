@@ -53,24 +53,24 @@
         <div class="row align-items-center">
             <!-- Columna del Formulario -->
             <div class="col-md-6">
-                <div id="create-post-form" class="card shadow p-4">
+                <div id="contactoForm" class="card shadow p-4">
                     <h3 class="mb-4 text-center">Contactenos</h3>
                     <form action="/posts" method="POST">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Nombre Completo</label>
-                            <input type="text" name="title" id="title" class="form-control" placeholder="Ingrese su nombre completo" required>
+                            <label for="nombre" class="form-label">Nombre Completo</label>
+                            <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese su nombre completo" required>
                         </div>
                         <div class="mb-3">
-                            <label for="descripcion" class="form-label">Correo</label>
-                            <textarea name="descripcion" id="descripcion" class="form-control" rows="2" placeholder="Escriba su correo" required></textarea>
+                            <label for="correo" class="form-label">Correo</label>
+                            <textarea name="correo" id="correo" class="form-control" rows="1" placeholder="Escriba su correo" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="ingredientes" class="form-label">Asunto</label>
-                            <textarea name="ingredientes" id="ingredientes" class="form-control" rows="2" placeholder="Escriba el asunto" required></textarea>
+                            <label for="asunto" class="form-label">Asunto</label>
+                            <textarea name="asunto" id="asunto" class="form-control" rows="1" placeholder="Escriba el asunto" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="preparacion" class="form-label">Mensaje</label>
-                            <textarea name="preparacion" id="preparacion" class="form-control" rows="5" placeholder="Escriba su mensaje" required></textarea>
+                            <label for="mensaje" class="form-label">Mensaje</label>
+                            <textarea name="mensaje" id="mensaje" class="form-control" rows="2" placeholder="Escriba su mensaje" required></textarea>
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-success w-100">Enviar</button>
@@ -89,7 +89,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
     <!-- Vincula el script JS -->
-    <script src="../js/crearPost.js"></script>
+    <script src=""></script>
 </body>
 
 </html>

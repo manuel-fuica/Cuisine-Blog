@@ -4,35 +4,86 @@ document.addEventListener('DOMContentLoaded', () => {
         const headers = {
             'Authorization': `Bearer ${token}`
         };
-        fetchPosts(headers);
+        // fetchPosts(headers); // Asumo que esta función ya está definida si es necesaria
     } else {
         console.error('No se encontró token en el localStorage');
     }
-
-    const userName = localStorage.getItem('username');
-    const userNameElement = document.getElementById('user-name');
-    userNameElement.textContent = userName;
 });
 
+// Manejo del envío del formulario para crear un post
+document.getElementById('postForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Evitar el comportamiento por defecto del formulario
 
-// Validación del campo "Preparación"
-document.getElementById('postForm').addEventListener('submit', function (e) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('Token no encontrado. No se puede enviar el post.');
+        return;
+    }
+
+    // Definir variables directamente desde los inputs
+    const title = document.getElementById('title').value.trim();
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const ingredientes = document.getElementById('ingredientes').value.trim();
     const preparacion = document.getElementById('preparacion').value.trim();
-    const preparacionError = document.getElementById('preparacionError');
+    const errors = [];
 
-    // Expresión regular para validar pasos con formato: "1. texto, 2. texto"
-    const validFormat = /^\d+\..+/;
-
-    // Dividir en líneas por coma o salto de línea
-    const pasos = preparacion.split(/,|\n/);
-
-    // Validar cada paso
-    const isValid = pasos.every(paso => validFormat.test(paso.trim()));
-
-    if (!isValid) {
-        e.preventDefault(); // Prevenir envío del formulario
-        preparacionError.style.display = 'block';
+    // Validación de campos
+    if (!title) errors.push('El título es obligatorio.');
+    if (!descripcion) errors.push('La descripción es obligatoria.');
+    if (!ingredientes) errors.push('Los ingredientes son obligatorios.');
+    if (!preparacion) {
+        errors.push('La preparación es obligatoria.');
     } else {
-        preparacionError.style.display = 'none';
+        const validFormat = /^\d+\..+/;
+        const pasos = preparacion.split(/,|\n/);
+        if (!pasos.every(paso => validFormat.test(paso.trim()))) {
+            errors.push('El campo preparación debe tener un formato válido (ejemplo: "1. Mezclar ingredientes").');
+        }
+    }
+
+    // Mostrar errores si existen
+    const errorElement = document.getElementById('preparacionError');
+    if (errors.length > 0) {
+        errorElement.innerHTML = errors.map(err => `<p>${err}</p>`).join('');
+        errorElement.style.display = 'block';
+        return;
+    } else {
+        errorElement.style.display = 'none';
+    }
+
+    // Crear objeto para enviar al servidor
+    const postData = {
+        title,
+        descripcion,
+        ingredientes, // Enviar como cadena de texto
+        preparacion
+    };
+
+    // Configurar fetch
+    try {
+        const response = await fetch('/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(postData)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert('Post creado exitosamente.');
+            console.log('Post creado:', data);
+
+            // Limpiar el formulario
+            document.getElementById('postForm').reset();
+        } else {
+            const errorData = await response.json();
+            console.error('Error al crear el post:', errorData);
+            alert('Ocurrió un error al crear el post. Inténtalo de nuevo.');
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+        alert('Ocurrió un error de red. Por favor, revisa tu conexión.');
     }
 });
