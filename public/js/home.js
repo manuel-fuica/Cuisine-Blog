@@ -1,5 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('username');
+
+    // Manejo del nombre de usuario y cierre de sesión
+    const userInfoElement = document.getElementById('user-info');
+    if (userInfoElement) {
+        const spanElement = userInfoElement.querySelector('span');
+        if (spanElement) {
+            spanElement.textContent = userName || 'Usuario'; // Mostrar 'Usuario' si no hay nombre
+        }
+
+        userInfoElement.title = 'Haz clic para cerrar sesión'; // Tooltip
+        userInfoElement.addEventListener('click', () => {
+            // Eliminar token y username del localStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            // Redirigir a la página de login
+            window.location.href = '/';
+        });
+    } else {
+        console.error('No se encontró el elemento con id "user-info" en el DOM');
+    }
+
+    // Verificar el token
     if (token) {
         const headers = {
             'Authorization': `Bearer ${token}`
@@ -7,16 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchPosts(headers);
     } else {
         console.error('No se encontró token en el localStorage');
+        alert('Token no válido o expirado, inicia sesión nuevamente');
+        window.location.href = '/';
     }
-
-    const userName = localStorage.getItem('username');
-    const userNameElement = document.getElementById('user-name');
-    userNameElement.textContent = userName;
 });
 
+// Función para obtener y mostrar los posts
 const fetchPosts = async (headers) => {
     try {
         const response = await fetch('/posts', { headers });
+
+        // Verificar si el token ha expirado o no es válido
+        if (!response.ok) {
+            throw new Error('Token no válido o expirado');
+        }
+
         const posts = await response.json();
         console.log(posts);
 
@@ -56,6 +84,7 @@ const fetchPosts = async (headers) => {
         postContainer.appendChild(row);
     } catch (error) {
         console.error('Error al cargar los posts:', error);
+        alert('Token no válido o expirado, inicia sesión nuevamente');
+        window.location.href = '/';
     }
 };
-

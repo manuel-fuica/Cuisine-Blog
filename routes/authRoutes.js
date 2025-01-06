@@ -60,7 +60,7 @@ router.post('/login', async (req, res) => {
 
         // Generar un token JWT si la contraseña es correcta
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
+            expiresIn: '2h',
         });
 
         res.json({
@@ -73,7 +73,7 @@ router.post('/login', async (req, res) => {
             },
         });
     } catch (error) {
-        console.error('Error al iniciar sesión:', error);
+        alert('Error al iniciar sesión, por favor verifica tus credenciales');
         res.status(500).json({ error: 'Error al iniciar sesión' });
     }
 });
