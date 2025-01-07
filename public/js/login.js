@@ -26,8 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Verifica el estado de la respuesta
             if (response.ok) {
                 console.log('Inicio de sesión exitoso, token recibido', data.token);
-                //muestra un alert de inicio de sesión exitoso
-                alert('Inicio de sesión exitoso');
                 //almacena el token en el localStorage
                 localStorage.setItem('token', data.token);
 

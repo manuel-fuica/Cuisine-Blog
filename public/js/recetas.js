@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Por favor, inicia sesión nuevamente.');
         window.location.href = '/login'; // Redirigir al inicio de sesión si no hay token
     }
+
+    // Manejar desplazamiento al hash al cargar la página
+    handleHashNavigation();
 });
 
 const fetchPosts = async (headers) => {
@@ -60,7 +63,7 @@ const fetchPosts = async (headers) => {
 
             const cardHTML = `
             <div class="card mb-4">
-                <div class="card-body">
+                <div class="card-body" id="${post.id}">
                     <h5 class="card-title text-center lead">${post.title}</h5>
                     <p class="card-text lead">Descripción: ${post.descripcion}</p>
                     <p class="card-text"><strong>Ingredientes:</strong> ${post.ingredientes}</p>
@@ -79,7 +82,37 @@ const fetchPosts = async (headers) => {
             cardWrapper.innerHTML = cardHTML;
             postContainer.appendChild(cardWrapper);
         });
+
+        // Después de cargar las recetas, manejar el desplazamiento al hash si existe
+        handleHashNavigation();
     } catch (error) {
         console.error('Error al cargar los posts:', error);
     }
 };
+
+// Función para manejar el desplazamiento al hash
+const handleHashNavigation = () => {
+    const hash = window.location.hash.substring(1); // Obtener el hash sin el #
+    if (hash) {
+        const targetElement = document.getElementById(hash);
+        if (targetElement) {
+            // Desplazarse al elemento con el ID igual al hash
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Agregar animación para resaltar la receta seleccionada
+            targetElement.classList.add('highlight');
+            setTimeout(() => targetElement.classList.remove('highlight'), 2000); // Eliminar el resaltado después de 2 segundos
+        } else {
+            console.error(`No se encontró el elemento con ID "${hash}" en la página.`);
+        }
+    }
+};
+
+// Estilo para resaltar el elemento seleccionado
+const style = document.createElement('style');
+style.textContent = `
+  .highlight {
+      outline: 3px solid #28a745; /* Verde de Bootstrap */
+      outline-offset: 4px;
+  }
+`;
+document.head.appendChild(style);

@@ -1,0 +1,8 @@
+#bodyLogin {
+    background-image: url('../img/fondoLogin.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Permanent Marker', cursive; /* Aplicar la fuente a las tarjetas */
+}

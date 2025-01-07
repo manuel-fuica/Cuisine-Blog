@@ -69,7 +69,11 @@ const fetchPosts = async (headers) => {
                       <div class="mt-auto">
                           <div class="d-flex gap-3">
                               <button id="like-btn" class="btn btn-outline-primary bg-primary text-white">❤️ <span id="like-count">0</span></button>
-                              <button id="view-recipe-btn" class="btn btn-outline-success bg-success text-white">Ver receta</button>
+                              <button 
+                                  class="btn btn-outline-success bg-success text-white view-recipe-btn" 
+                                  data-id="${post.id}">
+                                  Ver receta
+                              </button>
                           </div>
                       </div>
                   </div>
@@ -82,6 +86,15 @@ const fetchPosts = async (headers) => {
 
         // Agregar la fila al contenedor
         postContainer.appendChild(row);
+
+        // Añadir event listener a los botones "Ver receta"
+        document.querySelectorAll('.view-recipe-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const recipeId = e.target.getAttribute('data-id');
+                // Redirigir al endpoint con el ID de la receta como hash
+                window.location.href = `http://localhost:5000/recetas#${recipeId}`;
+            });
+        });
     } catch (error) {
         console.error('Error al cargar los posts:', error);
         alert('Token no válido o expirado, inicia sesión nuevamente');
