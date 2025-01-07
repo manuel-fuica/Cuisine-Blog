@@ -33,6 +33,26 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Token no válido o expirado, inicia sesión nuevamente');
         window.location.href = '/';
     }
+
+    // Mostrar u ocultar el botón de flecha hacia arriba según el desplazamiento
+    window.onscroll = function () {
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // Si el desplazamiento es mayor que 100px, mostrar el botón
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopBtn.style.display = 'block'; // Mostrar el botón
+        } else {
+            scrollToTopBtn.style.display = 'none'; // Ocultar el botón
+        }
+    };
+
+    // Al hacer clic en el botón, llevar al usuario al inicio
+    document.getElementById('scrollToTopBtn').addEventListener('click', function () {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Desplazamiento suave
+        });
+    });
 });
 
 // Función para obtener y mostrar los posts

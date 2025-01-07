@@ -36,6 +36,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Manejar desplazamiento al hash al cargar la página
     handleHashNavigation();
+
+    // Crear el botón de "subir" al hacer scroll
+    const scrollToTopBtn = document.createElement('button');
+    scrollToTopBtn.id = 'scrollToTopBtn';
+    scrollToTopBtn.classList.add('btn', 'btn-primary', 'rounded-circle', 'position-fixed', 'bottom-0', 'end-0', 'm-4');
+    scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    scrollToTopBtn.style.display = 'none'; // Establecerlo inicialmente como oculto
+    document.body.appendChild(scrollToTopBtn);
+
+    // Mostrar u ocultar el botón de flecha hacia arriba según el desplazamiento
+    window.onscroll = function () {
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // Si el desplazamiento es mayor que 100px, mostrar el botón
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopBtn.style.display = 'block'; // Mostrar el botón
+        } else {
+            scrollToTopBtn.style.display = 'none'; // Ocultar el botón
+        }
+    };
+
+    // Al hacer clic en el botón, llevar al usuario al inicio
+    document.getElementById('scrollToTopBtn').addEventListener('click', function () {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Desplazamiento suave
+        });
+    });
+
 });
 
 const fetchPosts = async (headers) => {
@@ -101,8 +130,6 @@ const handleHashNavigation = () => {
             // Agregar animación para resaltar la receta seleccionada
             targetElement.classList.add('highlight');
             setTimeout(() => targetElement.classList.remove('highlight'), 2000); // Eliminar el resaltado después de 2 segundos
-        } else {
-            console.error(`No se encontró el elemento con ID "${hash}" en la página.`);
         }
     }
 };
