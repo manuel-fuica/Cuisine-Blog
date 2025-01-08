@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             spanElement.textContent = userName || 'Usuario'; // Mostrar 'Usuario' si no hay nombre
         }
 
-        userInfoElement.title = 'Haz clic para cerrar sesión'; // Tooltip
+        userInfoElement.titulo = 'Haz clic para cerrar sesión'; // Tooltip
         userInfoElement.addEventListener('click', () => {
             // Eliminar token y username del localStorage
             localStorage.removeItem('token');
@@ -84,7 +84,7 @@ const fetchPosts = async (headers) => {
             const cardHTML = `
               <div class="card h-100 d-flex flex-column">
                   <div class="card-body d-flex flex-column">
-                      <h5 class="card-title">${post.title}</h5>
+                      <h5 class="card-title">${post.titulo}</h5>
                       <p class="card-text">${post.descripcion}</p>
                       <div class="mt-auto">
                           <div class="d-flex gap-3">

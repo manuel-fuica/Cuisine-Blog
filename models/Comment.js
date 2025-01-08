@@ -10,23 +10,28 @@ const Comment = sequelize.define('Comment', {
     },
     userId: {
         type: DataTypes.INTEGER,
+        allowNull: false, // Aseguramos que no sea nulo
         references: {
-            model: 'Users',
-            key: 'id',
+            model: 'Users',  // Referencia a la tabla 'Users'
+            key: 'id',       // Clave primaria de 'Users'
         },
     },
     postId: {
         type: DataTypes.INTEGER,
+        allowNull: false, // Aseguramos que no sea nulo
         references: {
-            model: 'Posts',
-            key: 'id',
+            model: 'Posts',  // Referencia a la tabla 'Posts'
+            key: 'id',       // Clave primaria de 'Posts'
         },
     },
-    content: {
+    contenido: {
         type: DataTypes.TEXT,
+        allowNull: false, // Aseguramos que el contenido no sea nulo
     },
 }, {
-    timestamps: true,
+    timestamps: true,  // Para que se creen las columnas 'createdAt' y 'updatedAt'
 });
+
+
 
 module.exports = Comment;

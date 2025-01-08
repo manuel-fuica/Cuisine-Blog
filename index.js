@@ -4,6 +4,7 @@ const cors = require('cors');
 const sequelize = require('./config/database'); // Asegúrate de importar solo una vez
 const authRoutes = require('./routes/authRoutes'); // Rutas de autenticación
 const postRoutes = require('./routes/postRoutes'); // Rutas de posts
+const commentRoutes = require('./routes/commentRoutes');
 const path = require('path');
 
 dotenv.config();
@@ -53,8 +54,11 @@ app.use('/auth', authRoutes);
 // Rutas protegidas
 app.use('/posts', postRoutes);
 
+//Ruta para crear comentarios
+app.use('/comments', commentRoutes);
+
 // Sincronizar las tablas
-sequelize.sync({ force: false}) // Esto eliminará y recreará las tablas si es necesario
+sequelize.sync({ force: false }) // Esto eliminará y recreará las tablas si es necesario
     .then(() => {
         console.log('Las tablas fueron sincronizadas.');
 

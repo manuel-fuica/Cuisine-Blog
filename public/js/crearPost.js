@@ -50,14 +50,14 @@ document.getElementById('postForm').addEventListener('submit', async function (e
     }
 
     // Definir variables directamente desde los inputs
-    const title = document.getElementById('title').value.trim();
+    const titulo = document.getElementById('titulo').value.trim();
     const descripcion = document.getElementById('descripcion').value.trim();
     const ingredientes = document.getElementById('ingredientes').value.trim();
     const preparacion = document.getElementById('preparacion').value.trim();
     const errors = [];
 
     // Validación de campos
-    if (!title) errors.push('El título es obligatorio.');
+    if (!titulo) errors.push('El título es obligatorio.');
     if (!descripcion) errors.push('La descripción es obligatoria.');
     if (!ingredientes) errors.push('Los ingredientes son obligatorios.');
     if (!preparacion) {
@@ -82,7 +82,7 @@ document.getElementById('postForm').addEventListener('submit', async function (e
 
     // Crear objeto para enviar al servidor
     const postData = {
-        title,
+        titulo,
         descripcion,
         ingredientes, // Enviar como cadena de texto
         preparacion

@@ -93,7 +93,7 @@ const fetchPosts = async (headers) => {
             const cardHTML = `
             <div class="card mb-4">
                 <div class="card-body" id="${post.id}">
-                    <h5 class="card-title text-center lead">${post.title}</h5>
+                    <h5 class="card-title text-center lead">${post.titulo}</h5>
                     <p class="card-text lead">Descripción: ${post.descripcion}</p>
                     <p class="card-text"><strong>Ingredientes:</strong> ${post.ingredientes}</p>
                     <p class="card-text"><strong>Preparación:</strong></p>

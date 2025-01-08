@@ -10,7 +10,7 @@ const router = express.Router();
 // Crear un post (protegido)
 router.post('/', auth, async (req, res) => {
     try {
-        const { title, descripcion, ingredientes, preparacion } = req.body;
+        const { titulo, descripcion, ingredientes, preparacion } = req.body;
         const userId = req.user?.userId; // Asegúrate de que el middleware auth agrega correctamente el userId
 
         if (!userId) {
@@ -18,7 +18,7 @@ router.post('/', auth, async (req, res) => {
         }
 
         console.log(`Creando post para el usuario: ${userId}`);
-        const newPost = await Post.create({ title, descripcion, ingredientes, preparacion, UserId: userId });
+        const newPost = await Post.create({ titulo, descripcion, ingredientes, preparacion, userId: userId });
 
         console.log('Post creado exitosamente:', newPost);
         res.status(201).json(newPost);

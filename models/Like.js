@@ -14,6 +14,7 @@ const Like = sequelize.define('Like', {
             model: 'Users',
             key: 'id',
         },
+        allowNull: false,
     },
     postId: {
         type: DataTypes.INTEGER,
@@ -21,9 +22,18 @@ const Like = sequelize.define('Like', {
             model: 'Posts',
             key: 'id',
         },
+        allowNull: false,
     },
 }, {
     timestamps: false,
+    // Aseguramos que no se creen duplicados de un like por usuario y post
+    indexes: [
+        {
+            unique: true,
+            fields: ['userId', 'postId'],
+        }
+    ]
 });
+
 
 module.exports = Like;
