@@ -44,10 +44,15 @@ Post.belongsTo(User, { foreignKey: 'userId', as: 'user' }); // Relación con Use
 User.hasMany(Post, { foreignKey: 'userId', as: 'posts' });  // Relación inversa de User -> Post
 
 Post.hasMany(Like, { foreignKey: 'postId', as: 'likes' });  // Relación con Like
-Like.belongsTo(Post, { foreignKey: 'postId', as: 'post' });  // Relación inversa de Like -> Post
+Like.belongsTo(Post, { foreignKey: 'postId', as: 'post' }); // Relación inversa de Like -> Post
 
 Post.hasMany(Comment, { foreignKey: 'postId', as: 'comments' });  // Relación con Comment
-Comment.belongsTo(Post, { foreignKey: 'postId', as: 'post' });  // Relación inversa de Comment -> Post
+Comment.belongsTo(Post, { foreignKey: 'postId', as: 'post' });    // Relación inversa de Comment -> Post
+
+// Nuevas relaciones: Comentarios -> Usuario y Usuario -> Comentarios
+Comment.belongsTo(User, { foreignKey: 'userId', as: 'user' });    // Relación con User
+User.hasMany(Comment, { foreignKey: 'userId', as: 'comments' });  // Relación inversa de User -> Comment
+
 
 // Para obtener el contador de likes en un post
 Post.prototype.getLikesCount = async function() {
