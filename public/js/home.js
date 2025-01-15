@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             spanElement.textContent = userName || 'Usuario'; // Mostrar 'Usuario' si no hay nombre
         }
 
-        userInfoElement.titulo = 'Haz clic para cerrar sesión'; // Tooltip
+        userInfoElement.title = 'Haz clic para cerrar sesión'; // Tooltip
         userInfoElement.addEventListener('click', () => {
             // Eliminar token y username del localStorage
             localStorage.removeItem('token');
@@ -112,7 +112,7 @@ const fetchPosts = async (headers) => {
             button.addEventListener('click', (e) => {
                 const recipeId = e.target.getAttribute('data-id');
                 // Redirigir al endpoint con el ID de la receta como hash
-                window.location.href = `http://localhost:5000/recetas#${recipeId}`;
+                window.location.href = `/recetas#${recipeId}`;
             });
         });
     } catch (error) {

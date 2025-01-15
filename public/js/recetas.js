@@ -2,144 +2,148 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     const userName = localStorage.getItem('username');
 
-    // Manejo del elemento user-info para mostrar el nombre de usuario y permitir el cierre de sesión
     const userInfoElement = document.getElementById('user-info');
     if (userInfoElement) {
-        const spanElement = userInfoElement.querySelector('span'); // Suponiendo que el span está dentro del div con id "user-info"
+        const spanElement = userInfoElement.querySelector('span');
         if (spanElement) {
-            spanElement.textContent = userName || 'Usuario'; // Mostrar 'Usuario' como valor predeterminado si no hay nombre
+            spanElement.textContent = userName || 'Usuario';
         }
 
-        userInfoElement.title = 'Haz clic para cerrar sesión'; // Agregar tooltip al div
+        userInfoElement.title = 'Haz clic para cerrar sesión';
         userInfoElement.addEventListener('click', () => {
-            // Eliminar token y nombre de usuario del localStorage
             localStorage.removeItem('token');
             localStorage.removeItem('username');
-            // Redirigir al inicio de sesión
-            window.location.href = '/'; // Cambia la ruta si es diferente
+            window.location.href = '/';
         });
-    } else {
-        console.error('No se encontró el elemento con id "user-info" en el DOM');
     }
 
-    // Verificar si el token existe
     if (token) {
-        const headers = {
-            'Authorization': `Bearer ${token}`
-        };
+        const headers = { 'Authorization': `Bearer ${token}` };
         fetchPosts(headers);
     } else {
-        console.error('No se encontró token en el localStorage');
         alert('Por favor, inicia sesión nuevamente.');
-        window.location.href = '/login'; // Redirigir al inicio de sesión si no hay token
+        window.location.href = '/login';
     }
 
-    // Manejar desplazamiento al hash al cargar la página
-    handleHashNavigation();
-
-    // Crear el botón de "subir" al hacer scroll
+    // Crear botón para subir al inicio
     const scrollToTopBtn = document.createElement('button');
     scrollToTopBtn.id = 'scrollToTopBtn';
     scrollToTopBtn.classList.add('btn', 'btn-primary', 'rounded-circle', 'position-fixed', 'bottom-0', 'end-0', 'm-4');
     scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    scrollToTopBtn.style.display = 'none'; // Establecerlo inicialmente como oculto
+    scrollToTopBtn.style.display = 'none';
     document.body.appendChild(scrollToTopBtn);
 
-    // Mostrar u ocultar el botón de flecha hacia arriba según el desplazamiento
     window.onscroll = function () {
         const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-
-        // Si el desplazamiento es mayor que 100px, mostrar el botón
         if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            scrollToTopBtn.style.display = 'block'; // Mostrar el botón
+            scrollToTopBtn.style.display = 'block';
         } else {
-            scrollToTopBtn.style.display = 'none'; // Ocultar el botón
+            scrollToTopBtn.style.display = 'none';
         }
     };
 
-    // Al hacer clic en el botón, llevar al usuario al inicio
     document.getElementById('scrollToTopBtn').addEventListener('click', function () {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth' // Desplazamiento suave
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
 });
 
+// Función para obtener los posts y mostrarlos
 const fetchPosts = async (headers) => {
     try {
         const response = await fetch('/posts', { headers });
         const posts = await response.json();
-        console.log(posts);
 
-        // Asegúrate de vaciar el contenedor antes de agregar los nuevos posts
         const postContainer = document.querySelector('.container');
         if (postContainer) {
-            postContainer.innerHTML = ''; // Vaciar el contenedor
+            postContainer.innerHTML = ''; // Limpiar contenido previo
         }
 
-        // Agregar tarjetas una debajo de otra
         posts.forEach((post) => {
-            // Verifica si 'preparacion' está presente y no es null
             const preparacion = post.preparacion ? post.preparacion : 'Preparación no disponible';
-
-            // Dividir la preparación en pasos (basado en los números)
             const pasos = preparacion.split(/(?=\d+\.)/);
-
-            // Generar el HTML de la lista ordenada para la preparación
             const listaPreparacion = pasos.map(paso => `<ol>${paso.trim()}</ol>`).join('');
 
             const cardHTML = `
             <div class="card mb-4">
-                <div class="card-body" id="${post.id}">
+                <div class="card-body" id="post-${post.id}">
                     <h5 class="card-title text-center lead">${post.titulo}</h5>
                     <p class="card-text lead">Descripción: ${post.descripcion}</p>
                     <p class="card-text"><strong>Ingredientes:</strong> ${post.ingredientes}</p>
                     <p class="card-text"><strong>Preparación:</strong></p>
                     <ol class="ps-3">${listaPreparacion}</ol>
                     <div class="d-flex gap-3 mt-3">
-                        <button id="like-btn" class="btn btn-outline-primary bg-primary text-white">❤️ <span id="like-count">0</span></button>
-                        <button id="view-recipe-btn" class="btn btn-outline-success bg-success text-white">Ver comentarios</button>
+                        <button id="like-btn-${post.id}" class="btn btn-outline-primary bg-primary text-white">❤️ <span id="like-count-${post.id}">0</span></button>
+                        <button id="view-comments-btn-${post.id}" class="btn bg-success text-white">Ver comentarios</button>
+                    </div>
+
+                    <!-- Sección de comentarios oculta inicialmente -->
+                    <div id="comments-section-${post.id}" class="comments-section d-none mt-3 border border-2 rounded p-3">
+                        <h6>Comentarios:</h6>
+                        <div id="comments-list-${post.id}"></div>
                     </div>
                 </div>
             </div>
             `;
 
             const cardWrapper = document.createElement('div');
-            cardWrapper.className = 'w-100'; // Ocupa toda la fila
+            cardWrapper.className = 'w-100';
             cardWrapper.innerHTML = cardHTML;
             postContainer.appendChild(cardWrapper);
+
+            // Añadir event listener para "Ver comentarios"
+            const viewCommentsBtn = document.getElementById(`view-comments-btn-${post.id}`);
+            viewCommentsBtn.addEventListener('click', () => {
+                toggleComments(post.id, headers);
+            });
         });
 
-        // Después de cargar las recetas, manejar el desplazamiento al hash si existe
         handleHashNavigation();
     } catch (error) {
         console.error('Error al cargar los posts:', error);
     }
 };
 
-// Función para manejar el desplazamiento al hash
-const handleHashNavigation = () => {
-    const hash = window.location.hash.substring(1); // Obtener el hash sin el #
-    if (hash) {
-        const targetElement = document.getElementById(hash);
-        if (targetElement) {
-            // Desplazarse al elemento con el ID igual al hash
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Agregar animación para resaltar la receta seleccionada
-            targetElement.classList.add('highlight');
-            setTimeout(() => targetElement.classList.remove('highlight'), 2000); // Eliminar el resaltado después de 2 segundos
+// Función para mostrar u ocultar los comentarios
+const toggleComments = async (postId, headers) => {
+    const commentsSection = document.getElementById(`comments-section-${postId}`);
+    const commentsList = document.getElementById(`comments-list-${postId}`);
+
+    if (commentsSection.classList.contains('d-none')) {
+        try {
+            const response = await fetch(`/posts/${postId}`, { headers });
+            const post = await response.json();
+
+            commentsList.innerHTML = ''; // Limpiar los comentarios previos
+
+            post.comments.forEach(comment => {
+                const commentHTML = `
+                    <div class="comment mb-2 p-2 border border-success rounded">
+                        <strong>${comment.user.username}:</strong> ${comment.contenido}
+                    </div>
+                `;
+                commentsList.innerHTML += commentHTML;
+            });
+
+            // Mostrar los comentarios
+            commentsSection.classList.remove('d-none');
+        } catch (error) {
+            console.error('Error al obtener los comentarios:', error);
         }
+    } else {
+        // Si ya está visible, ocultarlo
+        commentsSection.classList.add('d-none');
     }
 };
 
-// Estilo para resaltar el elemento seleccionado
-const style = document.createElement('style');
-style.textContent = `
-  .highlight {
-      outline: 3px solid #28a745; /* Verde de Bootstrap */
-      outline-offset: 4px;
-  }
-`;
-document.head.appendChild(style);
+// Función para manejar el desplazamiento al hash
+const handleHashNavigation = () => {
+    const hash = window.location.hash.substring(1); // Obtener el hash sin #
+    if (hash) {
+        const targetElement = document.getElementById(hash);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetElement.classList.add('highlight');
+            setTimeout(() => targetElement.classList.remove('highlight'), 2000); // Resaltar por 2 segundos
+        }
+    }
+};
