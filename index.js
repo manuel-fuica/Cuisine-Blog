@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes'); // Rutas de autenticación
 const postRoutes = require('./routes/postRoutes'); // Rutas de posts
 const commentRoutes = require('./routes/commentRoutes');
 const path = require('path');
+const nodemailer = require('nodemailer'); // Requerir Nodemailer
 
 dotenv.config();
 
@@ -56,6 +57,36 @@ app.use('/posts', postRoutes);
 
 //Ruta para crear comentarios
 app.use('/comments', commentRoutes);
+
+// Ruta para enviar el correo
+app.post('/send-email', async (req, res) => {
+    const { nombre, correo, asunto, mensaje } = req.body;
+
+    // Configuración del transporte de Nodemailer
+    const transporter = nodemailer.createTransport({
+        service: 'gmail', // Cambia esto si no usas Gmail
+        auth: {
+            user: process.env.EMAIL,  // Tu correo electrónico de envío
+            pass: process.env.EMAIL_PASSWORD,  // Tu contraseña de correo electrónico
+        },
+    });
+
+    // Opciones del correo
+    const mailOptions = {
+        from: correo,
+        to: process.env.EMAIL, // Dirección de correo para recibir los correos
+        subject: asunto,
+        text: `Nombre: ${nombre}\nCorreo: ${correo}\nMensaje: ${mensaje}`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: 'Correo enviado correctamente' });
+    } catch (error) {
+        console.error('Error al enviar el correo:', error);
+        res.status(500).json({ message: 'Error al enviar el correo' });
+    }
+});
 
 // Sincronizar las tablas
 sequelize.sync({ force: false }) // Esto eliminará y recreará las tablas si es necesario
