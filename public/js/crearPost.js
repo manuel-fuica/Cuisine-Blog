@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
 // Manejo del envío del formulario para crear un post
 document.getElementById('postForm').addEventListener('submit', async function (e) {
     e.preventDefault(); // Evitar el comportamiento por defecto del formulario
@@ -80,6 +79,14 @@ document.getElementById('postForm').addEventListener('submit', async function (e
         errorElement.style.display = 'none';
     }
 
+    // Mostrar el mensaje de estado "Creando post..." y mostrar el spinner
+    const statusMessage = document.getElementById('statusMessage');
+    const statusText = document.getElementById('statusText');
+    const statusIcon = document.getElementById('statusIcon');
+    statusMessage.classList.remove('d-none'); // Mostrar el mensaje de estado
+    statusText.textContent = 'Creando post...';
+    statusIcon.classList.add('fa-spin'); // Agregar animación de carga
+
     // Crear objeto para enviar al servidor
     const postData = {
         titulo,
@@ -100,19 +107,35 @@ document.getElementById('postForm').addEventListener('submit', async function (e
         });
 
         if (response.ok) {
-            const data = await response.json();
-            alert('Post creado exitosamente.');
-            
+            // Cambiar icono y texto por éxito
+            statusIcon.classList.remove('fa-spinner', 'fa-spin');
+            statusIcon.classList.add('fa-check-circle', 'text-success');
+            statusText.textContent = "Post creado con éxito";
 
-            // Limpiar el formulario
-            document.getElementById('postForm').reset();
+            // Limpiar el formulario después de 2 segundos
+            setTimeout(() => {
+                document.getElementById('postForm').reset();
+                statusMessage.classList.add('d-none');
+            }, 2000);
         } else {
-            const errorData = await response.json();
-            console.error('Error al crear el post:', errorData);
-            alert('Ocurrió un error al crear el post. Inténtalo de nuevo.');
-        }
-    } catch (error) {
-        console.error('Error de red:', error);
-        alert('Ocurrió un error de red. Por favor, revisa tu conexión.');
-    }
-});
+                    const errorData = await response.json();
+                    console.error('Error al crear el post:', errorData);
+                    // Mostrar mensaje de error
+                    statusText.textContent = 'Ocurrió un error al crear el post. Inténtalo de nuevo.';
+                    statusIcon.classList.remove('fa-spin'); // Detener la animación de carga
+                    statusIcon.classList.add('fa-times-circle'); // Icono de error
+                    setTimeout(() => {
+                        statusMessage.classList.add('d-none'); // Ocultar el mensaje de estado después de 2 segundos
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
+                // Mostrar mensaje de error de red
+                statusText.textContent = 'Ocurrió un error de red. Por favor, revisa tu conexión.';
+                statusIcon.classList.remove('fa-spin'); // Detener la animación de carga
+                statusIcon.classList.add('fa-times-circle'); // Icono de error
+                setTimeout(() => {
+                    statusMessage.classList.add('d-none'); // Ocultar el mensaje de estado después de 2 segundos
+                }, 2000);
+            }
+        });

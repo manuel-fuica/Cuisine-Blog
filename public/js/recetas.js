@@ -24,30 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Por favor, inicia sesión nuevamente.');
         window.location.href = '/login';
     }
-
-    // Crear botón para subir al inicio
-    const scrollToTopBtn = document.createElement('button');
-    scrollToTopBtn.id = 'scrollToTopBtn';
-    scrollToTopBtn.classList.add('btn', 'btn-primary', 'rounded-circle', 'position-fixed', 'bottom-0', 'end-0', 'm-4');
-    scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    scrollToTopBtn.style.display = 'none';
-    document.body.appendChild(scrollToTopBtn);
-
-    window.onscroll = function () {
-        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            scrollToTopBtn.style.display = 'block';
-        } else {
-            scrollToTopBtn.style.display = 'none';
-        }
-    };
-
-    document.getElementById('scrollToTopBtn').addEventListener('click', function () {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
 });
 
-// Función para obtener los posts y mostrarlos
 const fetchPosts = async (headers) => {
     try {
         const response = await fetch('/posts', { headers });
@@ -80,6 +58,10 @@ const fetchPosts = async (headers) => {
                     <div id="comments-section-${post.id}" class="comments-section d-none mt-3 border border-2 rounded p-3">
                         <h6>Comentarios:</h6>
                         <div id="comments-list-${post.id}"></div>
+                        <!-- Botón para agregar un nuevo comentario -->
+                        <div id="add-comment-section-${post.id}" class="mt-3">
+                            <button id="add-comment-btn-${post.id}" class="btn btn-primary w-100">Agregar comentario</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,6 +77,12 @@ const fetchPosts = async (headers) => {
             viewCommentsBtn.addEventListener('click', () => {
                 toggleComments(post.id, headers);
             });
+
+            // Añadir event listener para "Agregar comentario"
+            const addCommentBtn = document.getElementById(`add-comment-btn-${post.id}`);
+            addCommentBtn.addEventListener('click', () => {
+                promptAddComment(post.id);
+            });
         });
 
         handleHashNavigation();
@@ -103,10 +91,10 @@ const fetchPosts = async (headers) => {
     }
 };
 
-// Función para mostrar u ocultar los comentarios
 const toggleComments = async (postId, headers) => {
     const commentsSection = document.getElementById(`comments-section-${postId}`);
     const commentsList = document.getElementById(`comments-list-${postId}`);
+    const addCommentBtn = document.getElementById(`add-comment-btn-${postId}`);
 
     if (commentsSection.classList.contains('d-none')) {
         try {
@@ -124,18 +112,30 @@ const toggleComments = async (postId, headers) => {
                 commentsList.innerHTML += commentHTML;
             });
 
-            // Mostrar los comentarios
+            // Mostrar los comentarios y el botón de agregar comentario
             commentsSection.classList.remove('d-none');
+            addCommentBtn.classList.remove('d-none'); // Mostrar el botón de agregar comentario
         } catch (error) {
             console.error('Error al obtener los comentarios:', error);
         }
     } else {
         // Si ya está visible, ocultarlo
         commentsSection.classList.add('d-none');
+        addCommentBtn.classList.add('d-none'); // Ocultar el botón de agregar comentario
     }
 };
 
-// Función para manejar el desplazamiento al hash
+// Función para mostrar el prompt y agregar el comentario
+const promptAddComment = (postId) => {
+    const commentContent = prompt("Escribe tu comentario:");
+
+    if (commentContent) {
+        // Aquí puedes enviar el comentario al servidor
+        console.log(`Comentario agregado al post ${postId}: ${commentContent}`);
+        // Lógica para agregar el comentario en la base de datos...
+    }
+};
+
 const handleHashNavigation = () => {
     const hash = window.location.hash.substring(1); // Obtener el hash sin #
     if (hash) {
