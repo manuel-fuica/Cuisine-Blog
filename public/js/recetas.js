@@ -24,7 +24,29 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Por favor, inicia sesión nuevamente.');
         window.location.href = '/login';
     }
+
+    // Mostrar u ocultar el botón de flecha hacia arriba según el desplazamiento
+    window.onscroll = function () {
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // Si el desplazamiento es mayor que 100px, mostrar el botón
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopBtn.style.display = 'block'; // Mostrar el botón
+        } else {
+            scrollToTopBtn.style.display = 'none'; // Ocultar el botón
+        }
+    };
+
+    // Al hacer clic en el botón, llevar al usuario al inicio
+    document.getElementById('scrollToTopBtn').addEventListener('click', function () {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Desplazamiento suave
+        });
+    });
 });
+
+
 
 const fetchPosts = async (headers) => {
     try {
@@ -42,8 +64,8 @@ const fetchPosts = async (headers) => {
             const listaPreparacion = pasos.map(paso => `<ol>${paso.trim()}</ol>`).join('');
 
             const cardHTML = `
-            <div class="card mb-4">
-                <div class="card-body" id="post-${post.id}">
+            <div class="card mb-4" id="post-${post.id}">
+                <div class="card-body">
                     <h5 class="card-title text-center lead">${post.titulo}</h5>
                     <p class="card-text lead">Descripción: ${post.descripcion}</p>
                     <p class="card-text"><strong>Ingredientes:</strong> ${post.ingredientes}</p>
@@ -58,7 +80,6 @@ const fetchPosts = async (headers) => {
                     <div id="comments-section-${post.id}" class="comments-section d-none mt-3 border border-2 rounded p-3">
                         <h6>Comentarios:</h6>
                         <div id="comments-list-${post.id}"></div>
-                        <!-- Botón para agregar un nuevo comentario -->
                         <div id="add-comment-section-${post.id}" class="mt-3">
                             <button id="add-comment-btn-${post.id}" class="btn btn-primary w-100">Agregar comentario</button>
                         </div>
@@ -85,7 +106,7 @@ const fetchPosts = async (headers) => {
             });
         });
 
-        handleHashNavigation();
+        handleHashNavigation(); // Llama a la función de navegación por hash al cargar los posts
     } catch (error) {
         console.error('Error al cargar los posts:', error);
     }
@@ -112,34 +133,30 @@ const toggleComments = async (postId, headers) => {
                 commentsList.innerHTML += commentHTML;
             });
 
-            // Mostrar los comentarios y el botón de agregar comentario
             commentsSection.classList.remove('d-none');
-            addCommentBtn.classList.remove('d-none'); // Mostrar el botón de agregar comentario
+            addCommentBtn.classList.remove('d-none');
         } catch (error) {
             console.error('Error al obtener los comentarios:', error);
         }
     } else {
-        // Si ya está visible, ocultarlo
         commentsSection.classList.add('d-none');
-        addCommentBtn.classList.add('d-none'); // Ocultar el botón de agregar comentario
+        addCommentBtn.classList.add('d-none');
     }
 };
 
-// Función para mostrar el prompt y agregar el comentario
 const promptAddComment = (postId) => {
     const commentContent = prompt("Escribe tu comentario:");
 
     if (commentContent) {
-        // Aquí puedes enviar el comentario al servidor
         console.log(`Comentario agregado al post ${postId}: ${commentContent}`);
-        // Lógica para agregar el comentario en la base de datos...
+        // Lógica para guardar el comentario en el servidor...
     }
 };
 
 const handleHashNavigation = () => {
     const hash = window.location.hash.substring(1); // Obtener el hash sin #
     if (hash) {
-        const targetElement = document.getElementById(hash);
+        const targetElement = document.getElementById(`post-${hash}`);
         if (targetElement) {
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             targetElement.classList.add('highlight');

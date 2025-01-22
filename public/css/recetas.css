@@ -19,3 +19,9 @@
     transition: transform 0.3s, box-shadow 0.3s; /* Animaciones suaves */
     color: #fff;
 }
+
+.highlight {
+    border: 2px solid green;
+    transition: border 0.5s ease-out;
+}
+
